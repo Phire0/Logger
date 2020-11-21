@@ -1,4 +1,5 @@
 // Basic test
-const logger = require("./index");
+const Logger = require("./index");
 
-console.log(logger());
+const logger = new Logger();
+logger.log("Hello world!");
