@@ -1,6 +1,6 @@
 {
     "name": "@phire/logger",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A basic, lightweight JavaScript logging package",
     "license": "MIT",
     "repository": "phire/logger",
