@@ -1,86 +1,80 @@
-/*module.exports = function loggerFunc() {
-    return "Work in progress...";
-};*/
+const colours = {
+    reset: '\x1b[0m',
+    yellow: '\x1b[33m',
+    red: '\x1b[31m',
+    cyan: '\x1b[36m',
+    green: '\x1b[32m'
+};
 
 module.exports = class Logger
 {
-    constructor(appTitle = "Logger", args = {}) {
-        this.appTitle = appTitle;
+
+    /**
+     * @constructor
+     * @param {string} title The title to display in each log 
+     */
+    constructor(title = 'Logger') {
+        this.title = title;
+    }
+
+    /**
+     * Generate a timestamp in HH:MM:SS format
+     * @access private
+     * @returns {string} The generated timestamp
+     */
+    #getTimeStamp() {
+        const date = new Date();
         
-        this.settings = {
-            displayTitle: true,
-            displayDate: true,
-            displayTime: true,
-            logFile: "",
-            displayLogType: true,
-            displayClassDebugWarnings: true
-        }
+        const day = ('0' + date.getDate()).slice(-2);
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const year = date.getFullYear();
 
-        for (let arg in args) {
-            if (!(isNaN(this.settings[arg]))) {
-                this.settings[arg] = args[arg];
-            } else {
-                if (this.settings.displayClassDebugWarnings)
-                    console.log(`Invalid argument passed to Logger constructor\n\t${arg} = ${args[arg]} => Invalid.\n\tDisable these warnings using displayClassDebugWarnings`);
-            }
-        }
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+        const seconds = ('0' + date.getSeconds()).slice(-2);
 
-        if (this.settings.logFile === "")
-            this.#logFileWrite = () => {};
-
-        this.#logFileWrite("hello", "world");
+        return `[${day}/${month}/${year} ${hours}:${minutes}:${seconds}]`;
     }
 
-    changeSetting = (args = {}) => {
-        for (let arg in args) {
-            if (!(isNaN(this.settings[arg]))) {
-                this.settings[arg] = args[arg];
-            } else {
-                if (this.settings.displayClassDebugWarnings)
-                    console.log(`Invalid argument passed to Logger::changeSetting\n\t${arg} = ${args[arg]} => Invalid.\n\tDisable these warnings using displayClassDebugWarnings`);
-            }
-        }
+    /**
+     * Generate a title string
+     * @access private
+     * @returns {string} The generated title
+     */
+    #getTitle() {
+        return `[${colours.cyan}${this.title}${colours.reset}]`;
     }
 
-    log = (...str) => {
-        console.log(this.#buildOutput("log", str));
-    };
+    /**
+     * Display a log message
+     * @param {*} content The content to be displayed
+     */
+    log(content) {
+        console.log(`${this.#getTimeStamp()} ${this.#getTitle()} ${content}`);
+    }
 
-    warn = () => {};
-    err = () => {};
-    success = () => {};
-    logfile = () => {};
+    /**
+     * Display a success message
+     * @param {*} content The content to be displayed
+     */
+    success(content) {
+        console.log(`${this.#getTimeStamp()} ${this.#getTitle()} ${colours.green}${content}${colours.reset}`);
+    }
 
-    #logFileWrite = (...strings) => {console.log(strings.join(""))};
-    
-    #buildOutput = (type, ...input) => {
-        let titleString = this.appTitle;
-        let dateString = "";
-        let timeString = "";
-        let dtString = "";
-        let inputMessage = input.join(" ");
+    /**
+     * Display a warning message
+     * @param {*} content The content to be displayed
+     */
+    warn(content) {
+        console.warn(`${this.#getTimeStamp()} ${this.#getTitle()} ${colours.yellow}${content}${colours.reset}`);
+    }
 
-        // Do we add on the date?
-        //dateString.concat((this.settings.displayDate) ? "01/01/1970" : "");
-        if (this.settings.displayDate)
-            dateString = "01/01/1970";
+    /**
+     * Display an error message
+     * @param {*} content The content to be displayed
+     */
+    error(content) {
+        console.error(`${this.#getTimeStamp()} ${this.#getTitle()} ${colours.red}${content}${colours.reset}`);
+    }
 
-        // Do we add on the time?
-        //timeString.concat((this.settings.displayTime) ? "01:01:01" : "");
-        if (this.settings.displayTime)
-            timeString = "01:01:01";
-
-        if (!(dateString === "" && timeString === ""))
-            dtString = `[${dateString} ${timeString}]`;
-
-        if (!(this.settings.displayTitle))
-            titleString = "";
-
-        if (!(this.settings.displayLogType))
-            type = "";
-
-        const finalString = `${dtString} ${titleString} ${type} ${inputMessage}`;
-
-        return finalString;
-    };
 }
