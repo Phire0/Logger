@@ -13,8 +13,20 @@ module.exports = class Logger
      * @constructor
      * @param {string} title The title to display in each log 
      */
-    constructor(title = 'Logger') {
+    constructor(title = 'Logger', settings = {}) {
         this.title = title;
+
+        this.settings = {
+            displayTitle: true,
+        }
+
+        for (let setting in settings) {
+            if (!(isNaN(this.settings[setting]))) {
+                this.settings[setting] = settings[setting];
+            } else {
+                this.warn(`Invalid argument passed to Logger constructor: ${setting} = ${settings[setting]}`);
+            }
+        }
     }
 
     /**
@@ -42,7 +54,19 @@ module.exports = class Logger
      * @returns {string} The generated title
      */
     #getTitle() {
-        return `[${colours.cyan}${this.title}${colours.reset}]`;
+        if (this.settings.displayTitle)
+            return `[${colours.cyan}${this.title}${colours.reset}] `;
+        else
+            return '';
+    }
+
+    /**
+     * Generate the output prefix
+     * @access private
+     * @returns {string} The generated message prefix
+     */
+    #generatePrefix() {
+        return `${this.#getTimeStamp()} ${this.#getTitle()}`;
     }
 
     /**
@@ -50,7 +74,7 @@ module.exports = class Logger
      * @param {*} content The content to be displayed
      */
     log(content) {
-        console.log(`${this.#getTimeStamp()} ${this.#getTitle()} ${content}`);
+        console.log(`${this.#generatePrefix()}${content}`);
     }
 
     /**
@@ -58,7 +82,7 @@ module.exports = class Logger
      * @param {*} content The content to be displayed
      */
     success(content) {
-        console.log(`${this.#getTimeStamp()} ${this.#getTitle()} ${colours.green}${content}${colours.reset}`);
+        console.log(`${this.#generatePrefix()}${colours.green}${content}${colours.reset}`);
     }
 
     /**
@@ -66,7 +90,7 @@ module.exports = class Logger
      * @param {*} content The content to be displayed
      */
     warn(content) {
-        console.warn(`${this.#getTimeStamp()} ${this.#getTitle()} ${colours.yellow}${content}${colours.reset}`);
+        console.warn(`${this.#generatePrefix()}${colours.yellow}${content}${colours.reset}`);
     }
 
     /**
@@ -74,7 +98,7 @@ module.exports = class Logger
      * @param {*} content The content to be displayed
      */
     error(content) {
-        console.error(`${this.#getTimeStamp()} ${this.#getTitle()} ${colours.red}${content}${colours.reset}`);
+        console.error(`${this.#generatePrefix()}${colours.red}${content}${colours.reset}`);
     }
 
 }
