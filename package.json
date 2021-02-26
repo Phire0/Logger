@@ -1,9 +1,9 @@
 {
     "name": "@phire/logger",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "A basic, lightweight JavaScript logging package",
     "license": "MIT",
-    "repository": "phire/logger",
+    "repository": "phire0/Logger",
     "main": "index.js",
     "scripts": {
         "test": "node test.js"

@@ -1,7 +1,7 @@
 // Basic test
-const Logger = require("./index");
+const Logger = require('./index');
 
-const logger = new Logger();
+const logger = new Logger('My Title');
 
 logger.log('This is an informative message!');
 logger.success('The mission was successful!');

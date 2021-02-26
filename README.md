@@ -37,7 +37,20 @@ npm install phire0/logger
 
 This package will allow you to enhance your project's logging capabilities beyond those offered by the default JavaScript console.
 
-A future image will be provided here.
+![Output Example](https://i.imgur.com/i3dSGjg.png)
+
+Simply add this package to your project and instantiate a logger object (with an optional title) and you're good to go:
+
+```javascript
+const Logger = require('./index');
+
+const logger = new Logger('My Title');
+
+logger.log('This is an informative message!');
+logger.success('The mission was successful!');
+logger.warn('There might have been a slight issue...');
+logger.error('Something has gone very wrong, send help!');
+```
 
 ## Development setup
 
