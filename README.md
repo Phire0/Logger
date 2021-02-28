@@ -42,7 +42,7 @@ This package will allow you to enhance your project's logging capabilities beyon
 Simply add this package to your project and instantiate a logger object (with an optional title) and you're good to go:
 
 ```javascript
-const Logger = require('./index');
+const Logger = require('@phire/logger');
 
 const logger = new Logger('My Title');
 
